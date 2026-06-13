@@ -573,7 +573,7 @@ export default function ModernAuraLayout({
 
               <div className="bg-white rounded-[28px] p-5">
                 <CardQRCode
-                  slug={card.slug}
+                  slug={card.slug ?? ""}
                   primaryColor={
                     primaryColor
                   }
@@ -591,216 +591,184 @@ export default function ModernAuraLayout({
             />
           </div>
 
-          {/* GALLERY */}
+{/* GALLERY */}
 
-          {card.galleryImages?.length > 0 && (
-            <div className="mt-10">
+{(card.galleryImages?.length ?? 0) > 0 && (
+  <div className="mt-10">
+    <h2
+      className="text-xl font-bold mb-5"
+      style={{
+        color: primaryColor,
+      }}
+    >
+      Gallery
+    </h2>
 
-              <h2
-                className="text-xl font-bold mb-5"
-                style={{
-                  color: primaryColor,
-                }}
-              >
-                Gallery
-              </h2>
+    <div className="grid grid-cols-2 gap-4">
+      {(card.galleryImages ?? []).map(
+        (
+          image: string,
+          index: number
+        ) => (
+          <div
+            key={index}
+            className="overflow-hidden rounded-xl"
+          >
+            <img
+              src={image}
+              alt={`Gallery ${index}`}
+              className="w-full h-40 object-cover hover:scale-105 transition"
+            />
+          </div>
+        )
+      )}
+    </div>
+  </div>
+)}
 
-              <div className="grid grid-cols-2 gap-4">
+{/* SERVICES */}
 
-                {card.galleryImages.map(
-                  (
-                    image: string,
-                    index: number
-                  ) => (
-                    <div
-                      key={index}
-                      className="
-                        overflow-hidden
-                        rounded-[24px]
-                        border
-                        border-white/10
-                      "
-                    >
-                      <img
-                        src={image}
-                        alt=""
-                        className="
-                          w-full
-                          h-44
-                          object-cover
-                          cursor-pointer
-                          hover:scale-110
-                          transition
-                          duration-500
-                        "
-                        onClick={() =>
-                          setSelectedImage(
-                            image
-                          )
-                        }
-                      />
-                    </div>
-                  )
-                )}
+{card.showServices &&
+  (card.services?.length ?? 0) > 0 && (
+    <div className="mt-10">
+      <h2
+        className="text-xl font-bold mb-5"
+        style={{
+          color: primaryColor,
+        }}
+      >
+        Services
+      </h2>
 
+      <div className="space-y-5">
+        {(card.services ?? []).map(
+          (
+            service: any,
+            index: number
+          ) => (
+            <div
+              key={index}
+              className="
+                rounded-[28px]
+                p-5
+                border
+                border-white/10
+                bg-white/5
+              "
+            >
+              {service.icon && (
+                <img
+                  src={service.icon}
+                  alt=""
+                  className="
+                    w-16
+                    h-16
+                    rounded-2xl
+                    object-cover
+                    mb-4
+                  "
+                />
+              )}
+
+              <h3 className="text-xl font-bold text-white">
+                {service.title}
+              </h3>
+
+              <p className="text-gray-300 mt-3">
+                {service.description}
+              </p>
+
+              {service.price && (
+                <div
+                  className="text-2xl font-bold mt-4"
+                  style={{
+                    color: primaryColor,
+                  }}
+                >
+                  ₹{service.price}
+                </div>
+              )}
+            </div>
+          )
+        )}
+      </div>
+    </div>
+)}
+
+{/* PRODUCTS */}
+
+{card.showProducts &&
+  (card.products?.length ?? 0) > 0 && (
+    <div className="mt-10">
+      <h2
+        className="text-xl font-bold mb-5"
+        style={{
+          color: primaryColor,
+        }}
+      >
+        Products
+      </h2>
+
+      <div className="space-y-5">
+        {(card.products ?? []).map(
+          (
+            product: any,
+            index: number
+          ) => (
+            <div
+              key={index}
+              className="
+                overflow-hidden
+                rounded-[28px]
+                border
+                border-white/10
+                bg-white/5
+              "
+            >
+              {product.image && (
+                <img
+                  src={product.image}
+                  alt=""
+                  className="
+                    w-full
+                    h-52
+                    object-cover
+                    cursor-pointer
+                  "
+                  onClick={() =>
+                    setSelectedImage(
+                      product.image
+                    )
+                  }
+                />
+              )}
+
+              <div className="p-5">
+                <h3 className="text-xl font-bold text-white">
+                  {product.name}
+                </h3>
+
+                <p className="text-gray-300 mt-3">
+                  {product.description}
+                </p>
+
+                <div
+                  className="text-2xl font-bold mt-4"
+                  style={{
+                    color: primaryColor,
+                  }}
+                >
+                  ₹
+                  {product.discountPrice ||
+                    product.price}
+                </div>
               </div>
             </div>
-          )}
-
-          {/* SERVICES */}
-
-          {card.showServices &&
-            card.services?.length > 0 && (
-              <div className="mt-10">
-
-                <h2
-                  className="text-xl font-bold mb-5"
-                  style={{
-                    color: primaryColor,
-                  }}
-                >
-                  Services
-                </h2>
-
-                <div className="space-y-5">
-
-                  {card.services.map(
-                    (
-                      service: any,
-                      index: number
-                    ) => (
-                      <div
-                        key={index}
-                        className="
-                          rounded-[28px]
-                          p-5
-                          border
-                          border-white/10
-                          bg-white/5
-                        "
-                      >
-
-                        {service.icon && (
-                          <img
-                            src={service.icon}
-                            alt=""
-                            className="
-                              w-16
-                              h-16
-                              rounded-2xl
-                              object-cover
-                              mb-4
-                            "
-                          />
-                        )}
-
-                        <h3 className="text-xl font-bold text-white">
-                          {service.title}
-                        </h3>
-
-                        <p className="text-gray-300 mt-3">
-                          {service.description}
-                        </p>
-
-                        {service.price && (
-                          <div
-                            className="text-2xl font-bold mt-4"
-                            style={{
-                              color: primaryColor,
-                            }}
-                          >
-                            ₹{service.price}
-                          </div>
-                        )}
-
-                      </div>
-                    )
-                  )}
-
-                </div>
-              </div>
-            )}
-
-          {/* PRODUCTS */}
-
-          {card.showProducts &&
-            card.products?.length > 0 && (
-              <div className="mt-10">
-
-                <h2
-                  className="text-xl font-bold mb-5"
-                  style={{
-                    color: primaryColor,
-                  }}
-                >
-                  Products
-                </h2>
-
-                <div className="space-y-5">
-
-                  {card.products.map(
-                    (
-                      product: any,
-                      index: number
-                    ) => (
-                      <div
-                        key={index}
-                        className="
-                          overflow-hidden
-                          rounded-[28px]
-                          border
-                          border-white/10
-                          bg-white/5
-                        "
-                      >
-
-                        {product.image && (
-                          <img
-                            src={product.image}
-                            alt=""
-                            className="
-                              w-full
-                              h-52
-                              object-cover
-                              cursor-pointer
-                            "
-                            onClick={() =>
-                              setSelectedImage(
-                                product.image
-                              )
-                            }
-                          />
-                        )}
-
-                        <div className="p-5">
-
-                          <h3 className="text-xl font-bold text-white">
-                            {product.name}
-                          </h3>
-
-                          <p className="text-gray-300 mt-3">
-                            {product.description}
-                          </p>
-
-                          <div
-                            className="text-2xl font-bold mt-4"
-                            style={{
-                              color: primaryColor,
-                            }}
-                          >
-                            ₹
-                            {product.discountPrice ||
-                              product.price}
-                          </div>
-
-                        </div>
-                      </div>
-                    )
-                  )}
-
-                </div>
-              </div>
-            )}
+          )
+        )}
+      </div>
+    </div>
+)}
 
           {/* PAYMENT */}
 
@@ -814,7 +782,7 @@ export default function ModernAuraLayout({
 
           <div className="mt-10">
             <LeadForm
-              cardId={card.id}
+              cardId={card.id ?? ""}
               primaryColor={
                 primaryColor
               }

@@ -16,7 +16,7 @@ VERSION:3.0
 FN:${card.name || ""}
 ORG:${card.company || ""}
 TITLE:${card.designation || ""}
-TEL:${card.phone || ""}
+TEL:${card.mobile || ""}
 EMAIL:${card.email || ""}
 URL:${card.website || ""}
 ADR:;;${card.address || ""};;;;

@@ -51,9 +51,9 @@ export default function ExecutiveLayout({
         </div>
 
       </div>
-     <CardQRCode
-  slug={card.slug}
-  primaryColor={card.primaryColor || "#9333EA"}
+    <CardQRCode
+  slug={card.slug ?? ""}
+  primaryColor={card.primaryColor ?? "#9333EA"}
 />
     </div>
   );

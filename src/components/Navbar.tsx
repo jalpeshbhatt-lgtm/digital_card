@@ -1,1 +1,11 @@
-<Link href="/dashboard/leads"> Leads </Link
+import Link from "next/link";
+
+export default function Navbar() {
+  return (
+    <nav>
+      <Link href="/dashboard/leads">
+        Leads
+      </Link>
+    </nav>
+  );
+}

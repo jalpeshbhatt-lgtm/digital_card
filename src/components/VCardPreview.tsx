@@ -6,8 +6,7 @@ export default function VCardPreview({
 }: any) {
   return (
     <TemplateRenderer
-      template={template}
-      card={card}
-    />
-  );
+  template={template}
+  cardData={card}
+/>  );
 }

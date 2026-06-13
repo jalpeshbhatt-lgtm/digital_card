@@ -311,7 +311,7 @@ export default function LuxuryLayout({
           {card.showQrSection && (
             <div className="mt-8 flex justify-center">
               <CardQRCode
-                slug={card.slug}
+                slug={card.slug ?? ""}
                 primaryColor={
                   primaryColor
                 }
@@ -329,7 +329,7 @@ export default function LuxuryLayout({
 
           {/* GALLERY */}
 
-          {card.galleryImages?.length > 0 && (
+        {(card.galleryImages?.length ?? 0) > 0 && (
             <div className="mt-8">
               <h2
                 className="text-xl font-bold mb-4"
@@ -341,11 +341,9 @@ export default function LuxuryLayout({
               </h2>
 
               <div className="grid grid-cols-2 gap-4">
-                {card.galleryImages.map(
-                  (
-                    image: string,
-                    index: number
-                  ) => (
+               {(card.galleryImages ?? []).map(
+  (image: string, index: number) => (
+    
                     <div
                       key={index}
                       className="bg-black border rounded-xl overflow-hidden flex items-center justify-center"
@@ -373,9 +371,9 @@ export default function LuxuryLayout({
 
           {/* SERVICES */}
 
-          {card.showServices &&
-            card.services?.length >
-              0 && (
+       {card.showServices &&
+  (card.services?.length ?? 0) > 0 && (
+
               <div className="mt-8">
                 <h2
                   className="text-xl font-bold mb-4"
@@ -388,7 +386,7 @@ export default function LuxuryLayout({
                 </h2>
 
                 <div className="space-y-4">
-                  {card.services.map(
+                 {(card.services ?? []).map(
                     (
                       service: any,
                       index: number
@@ -481,135 +479,83 @@ Please provide more details.`
               </div>
             )}
 
-          {/* PRODUCTS */}
 
-          {card.showProducts &&
-            card.products?.length >
-              0 && (
-              <div className="mt-8">
-                <h2
-                  className="text-xl font-bold mb-4"
-                  style={{
-                    color:
-                      primaryColor,
-                  }}
-                >
-                  Products
-                </h2>
+{/* PRODUCTS */}
 
-                <div className="space-y-4">
-                  {card.products.map(
-                    (
-                      product: any,
-                      index: number
-                    ) => (
-                      <div
-                        key={index}
-                        className="border rounded-xl p-4"
-                        style={{
-                          borderColor:
-                            primaryColor,
-                          backgroundColor:
-                            "#1a1a1a",
-                        }}
-                      >
-                        {product.image && (
-                          <img
-                            src={
-                              product.image
-                            }
-                            alt=""
-                            className="w-full h-44 object-cover rounded-lg cursor-pointer hover:scale-105 transition"
-                            onClick={() =>
-                              setSelectedImage(
-                                product.image
-                              )
-                            }
-                          />
-                        )}
+{card.showProducts &&
+  (card.products?.length ?? 0) > 0 && (
+    <div className="mt-8">
+      <h2 className="text-xl font-bold mb-4">
+        Products
+      </h2>
 
-                        <h3 className="font-bold text-lg mt-3">
-                          {
-                            product.name
-                          }
-                        </h3>
+      <div className="space-y-4">
+        {(card.products ?? []).map(
+          (
+            product: any,
+            index: number
+          ) => (
+            <div
+              key={index}
+              className="border rounded-xl p-4 bg-white shadow"
+            >
+              {product.image && (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-40 object-cover rounded mb-3"
+                />
+              )}
 
-                        {product.category && (
-                          <p className="text-yellow-200 text-sm">
-                            {
-                              product.category
-                            }
-                          </p>
-                        )}
+              <h3 className="font-bold text-lg">
+                {product.name}
+              </h3>
 
-                        <p className="text-gray-300 mt-2">
-                          {
-                            product.description
-                          }
-                        </p>
+              {product.category && (
+                <p className="text-gray-500 text-sm">
+                  {product.category}
+                </p>
+              )}
 
-                        <div className="mt-3">
-                          {product.discountPrice ? (
-                            <>
-                              <span className="line-through text-gray-500 mr-2">
-                                ₹
-                                {
-                                  product.price
-                                }
-                              </span>
+              <p className="text-gray-600 text-sm mt-2">
+                {product.description}
+              </p>
 
-                              <span className="font-bold text-green-500">
-                                ₹
-                                {
-                                  product.discountPrice
-                                }
-                              </span>
-                            </>
-                          ) : (
-                            <span
-                              className="font-bold"
-                              style={{
-                                color:
-                                  primaryColor,
-                              }}
-                            >
-                              ₹
-                              {
-                                product.price
-                              }
-                            </span>
-                          )}
-                        </div>
+              <div className="mt-2">
+                {product.discountPrice ? (
+                  <>
+                    <span className="line-through text-gray-400 mr-2">
+                      ₹{product.price}
+                    </span>
 
-                        {card.whatsapp && (
-                          <a
-                            href={`https://wa.me/${card.whatsapp}?text=${encodeURIComponent(
-                              `Hi, I want to order:
-
-${product.name}
-
-Please send more details.`
-                            )}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="block mt-4 text-center py-3 rounded-lg font-bold"
-                            style={{
-                              backgroundColor:
-                                primaryColor,
-                              color:
-                                "#111111",
-                            }}
-
-                          >
-                            Order Now
-                          </a>
-                        )}
-                      </div>
-                    )
-                  )}
-                </div>
+                    <span className="font-bold text-green-600">
+                      ₹{product.discountPrice}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-bold">
+                    ₹{product.price}
+                  </span>
+                )}
               </div>
-            )}
+
+              {card.whatsapp && (
+                <a
+                  href={`https://wa.me/${card.whatsapp}?text=Hi, I want to order ${product.name}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block mt-3 text-center text-white py-2 rounded bg-green-500"
+                >
+                  Order on WhatsApp
+                </a>
+              )}
+            </div>
+          )
+        )}
+      </div>
+    </div>
+)}
+
 
           {/* PAYMENT */}
 
@@ -623,7 +569,7 @@ Please send more details.`
 
           <div className="mt-8">
             <LeadForm
-              cardId={card.id}
+              cardId={card.id ?? ""}
               primaryColor={
                 primaryColor
               }

@@ -1,37 +1,37 @@
+export interface Service {
+  title: string;
+  description: string;
+  price: string;
+}
+
+export interface Product {
+  name: string;
+  description: string;
+  price: string;
+  discountPrice?: string;
+  stock?: string;
+}
+
 export interface CardData {
   id?: string;
-
+  slug?: string;
   name: string;
-  designation: string;
-  company: string;
-
-  phone?: string;
-  mobile?: string;
-
-  email: string;
-  website: string;
-  whatsapp?: string;
-
-  address?: string;
-  directionUrl?: string;
-
-  slug: string;
+  designation?: string;
+  company?: string;
 
   profileImage?: string;
-  coverImage?: string;
 
-  aboutUs?: string;
-  bio?: string;
+  mobile?: string;
+  whatsapp?: string;
+  email?: string;
+  website?: string;
+  address?: string;
 
-  skills?: string[];
-  
-  upiId?: string;
-  paymentQrCode?: string;
+bio?: string;
+aboutUs?: string;
 
-  primaryColor?: string;
-  fontFamily?: string;
-  showQrSection?: boolean;
-  
+directionUrl?: string;
+
   facebook?: string;
   instagram?: string;
   linkedin?: string;
@@ -39,29 +39,24 @@ export interface CardData {
   twitter?: string;
   telegram?: string;
 
-  socialLinks?: {
-    platform: string;
-    url: string;
-  }[];services?: {
-  icon?: string;
-  title: string;
-  description?: string;
-}[];
+  services?: Service[];
 
-products?: {
-  image?: string;
-  name: string;
-  price?: string;
-  description?: string;
-}[];
+  products?: Product[];
 
-showServices?: boolean;
-showProducts?: boolean;
+  galleryImages?: string[];
 
-
-  // Doctor fields
+  upiId?: string;
+  paymentQrCode?: string;
+  showQrSection?: boolean;
   qualification?: string;
   specialization?: string;
   clinicTiming?: string;
   appointmentUrl?: string;
+  showServices?: boolean;
+  template?: string;
+  showProducts?: boolean;
+  primaryColor?: string;
+  secondaryColor?: string;
+  fontFamily?: string;
+  buttonStyle?: string;
 }

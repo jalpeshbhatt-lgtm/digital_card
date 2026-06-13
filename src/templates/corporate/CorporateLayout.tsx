@@ -248,7 +248,7 @@ style={{
   <>
        <div className="p-4 flex justify-center">
       <CardQRCode
-        slug={card.slug}
+        slug={card.slug ?? ""}
         primaryColor={card.primaryColor || "#9333EA"}
       />
     </div>
@@ -256,7 +256,7 @@ style={{
 )}
 <ContactActions card={card} />
 
-{card.galleryImages?.length > 0 && (
+{(card.galleryImages?.length ?? 0) > 0 && (
   <div className="mt-8">
     <h2
       className="text-xl font-bold mb-4"
@@ -269,7 +269,7 @@ style={{
     </h2>
 
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {card.galleryImages.map(
+     {(card.galleryImages ?? []).map(
   (image: string, index: number) => (
     <div
       key={`${image}-${index}`}
@@ -292,7 +292,7 @@ style={{
 {/* SERVICES */}
 
 {card.showServices &&
-  card.services?.length > 0 && (
+  (card.services?.length ?? 0) > 0 && (
     <div className="mt-8">
       <h2
         className="text-xl font-bold mb-4"
@@ -302,7 +302,7 @@ style={{
       </h2>
 
       <div className="space-y-4">
-        {card.services.map(
+        {(card.services ?? []).map(
           (service: any, index: number) => (
             <div
               key={index}
@@ -370,10 +370,11 @@ Please provide more details.`
     </div>
 )}
 
+
 {/* PRODUCTS */}
 
 {card.showProducts &&
-  card.products?.length > 0 && (
+  (card.products?.length ?? 0) > 0 && (
     <div className="mt-8">
       <h2
         className="text-xl font-bold mb-4"
@@ -383,20 +384,22 @@ Please provide more details.`
       </h2>
 
       <div className="space-y-4">
-        {card.products.map(
+        {(card.products ?? []).map(
           (product: any, index: number) => (
             <div
               key={index}
               className="border rounded-xl p-4 shadow bg-white"
             >
-  {product.image && (
-  <img
-    src={product.image}
-    alt={product.name}
-    className="w-full h-40 object-cover rounded mb-3 cursor-pointer hover:scale-105 transition"
-    onClick={() => setSelectedImage(product.image)}
-  />
-)}
+              {product.image && (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-40 object-cover rounded mb-3 cursor-pointer hover:scale-105 transition"
+                  onClick={() =>
+                    setSelectedImage(product.image)
+                  }
+                />
+              )}
 
               <h3 className="font-bold text-lg">
                 {product.name}
@@ -454,15 +457,16 @@ Please provide more details.`
       </div>
     </div>
 )}
+
 <PaymentSection card={card} />
 
       {/* Inquiry Form */}
             <div className="p-4">
-        <LeadForm
-          cardId={card.id}
-          primaryColor={card.primaryColor}
-        />
-      </div>
+<LeadForm
+  cardId={card.id ?? ""}
+  primaryColor={card.primaryColor}
+/>
+    </div>
     </div>
   </div>
 

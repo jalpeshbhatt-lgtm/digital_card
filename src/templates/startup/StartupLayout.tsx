@@ -278,7 +278,7 @@ export default function StartupLayout({
         {/* QR Code */}
         <div className="flex justify-center mt-8">
         <CardQRCode
-  slug={card.slug}
+  slug={card.slug ?? ""}
   primaryColor={card.primaryColor || "#9333EA"}
 />
          </div>
@@ -287,10 +287,17 @@ export default function StartupLayout({
 <PaymentSection card={card} />
          </div>
          
-           {/* Lead Form */}
-           <div>
-             <LeadForm cardId={card.id} />
-           </div>
+      {/* Lead Form */}
+
+      <div className="p-6">
+        <LeadForm
+          cardId={card.id ?? ""}
+          primaryColor={
+            card.primaryColor || "#7C3AED"
+          }
+        />
       </div>
+
+    </div>
   );
 }

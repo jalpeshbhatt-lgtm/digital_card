@@ -308,7 +308,7 @@ export default function PortfolioLayout({
         <div className="mt-6 flex justify-center">
 
          <CardQRCode
-  slug={card.slug}
+  slug={card.slug ?? ""}
   primaryColor={card.primaryColor || "#9333EA"}
 />
 
@@ -319,7 +319,7 @@ export default function PortfolioLayout({
 
 {/* Inquiry Form */}
 <LeadForm
-  cardId={card.id}
+  cardId={card.id ?? ""}
   primaryColor={card.primaryColor}
 />
        </div>

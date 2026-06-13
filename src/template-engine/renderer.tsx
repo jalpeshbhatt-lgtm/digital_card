@@ -1,30 +1,34 @@
-import CorporateTemplate from "@/templates/CorporateTemplate";
-import ModernTemplate from "@/templates/ModernTemplate";
-//import PremiumTemplate from "@/templates/PremiumTemplate";
-import LuxuryTemplate from "@/templates/LuxuryTemplate";
-//import StarrtupTemplate  from "@/templates/StartupTemplate";
-import DoctorLayout from "@/templates/DoctorLayout";
-import ExecutiveLayout from "@/templates/executive/ExecutiveLayout";
+import React from "react";
 
+import CorporateLayout from "@/templates/corporate/CorporateLayout";
+import ModernLayout from "@/templates/modern/ModernLayout";
+import LuxuryLayout from "@/templates/luxury/LuxuryLayout";
+import DoctorsLayout from "@/templates/DoctorsLayout/DoctorLayout";
 
-
-const templates: Record<string, React.ComponentType<any>> = {
-  corporate: CorporateTemplate,
-  modern: ModernTemplate,
-  luxury: LuxuryTemplate,
-  doctor: DoctorLayout,
-  executive: ExecutiveLayout,
+const templates: Record<
+  string,
+  React.ComponentType<any>
+> = {
+  corporate: CorporateLayout,
+  modern: ModernLayout,
+  luxury: LuxuryLayout,
+  doctor: DoctorsLayout,
 };
 
-export default function TemplateRenderer({
-  template,
-  cardData,
-}: {
+interface Props {
   template: string;
   cardData: any;
-}) {
-  const Component =
-    templates[template] || CorporateTemplate;
+}
 
-  return <Component cardData={cardData} />;
+export default function Renderer({
+  template,
+  cardData,
+}: Props) {
+  const Component =
+    templates[template] ||
+    CorporateLayout;
+
+  return (
+    <Component cardData={cardData} />
+  );
 }

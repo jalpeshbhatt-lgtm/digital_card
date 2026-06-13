@@ -178,21 +178,21 @@ console.log("DOCTOR CARD DATA:", card);
 <ContactActions card={card} />
                  {/* QR Code */}
       <div className="p-4 flex justify-center">
-       <CardQRCode
-  slug={card.slug}
-  primaryColor={card.primaryColor || "#9333EA"}
+  
+<CardQRCode
+  slug={card.slug ?? ""}
+  primaryColor={card.primaryColor ?? "#9333EA"}
 />
       </div>
 
 <PaymentSection card={card} />
 
       {/* Inquiry Form */}
-      <div className="p-4">
-        <LeadForm
-  cardId={card.id}
-  primaryColor={card.primaryColor}
-/>
-      </div>
-     </div>
+    <div className="p-4">
+  <LeadForm
+    cardId={card.id ?? ""}
+    primaryColor={card.primaryColor ?? "#9333EA"}
+  />
+</div>   </div>
 );
 }
