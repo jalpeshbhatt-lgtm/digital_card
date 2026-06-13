@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import TemplateRenderer from "@/components/templates/TemplateRenderer";
+import TemplateRenderer from "@/template-engine/renderer";
 
 interface Props {
   params: Promise<{

@@ -1,36 +1,67 @@
-export interface Service {
-  title: string;
-  description: string;
-  price: string;
+export interface ServiceItem {
+  title?: string;
+  description?: string;
+  price?: string;
+  category?: string;
+  icon?: string;
 }
 
-export interface Product {
-  name: string;
-  description: string;
-  price: string;
+export interface ProductItem {
+  name?: string;
+  description?: string;
+  price?: string;
   discountPrice?: string;
-  stock?: string;
+  image?: string;
+  category?: string;
+}
+
+export interface SocialLink {
+  platform?: string;
+  url?: string;
+}
+
+export interface PaymentLink {
+  title?: string;
+  url?: string;
+}
+
+export interface Testimonial {
+  name?: string;
+  review?: string;
+}
+
+export interface DocumentItem {
+  title?: string;
+  file?: string;
 }
 
 export interface CardData {
   id?: string;
   slug?: string;
+
   name: string;
+
   designation?: string;
   company?: string;
 
-  profileImage?: string;
-
   mobile?: string;
   whatsapp?: string;
+
   email?: string;
   website?: string;
+
   address?: string;
 
-bio?: string;
-aboutUs?: string;
+  bio?: string;
+  about?: string;
+  aboutUs?: string;
 
-directionUrl?: string;
+  profileImage?: string;
+
+  coverImage?: string;
+
+  primaryColor?: string;
+  fontFamily?: string;
 
   facebook?: string;
   instagram?: string;
@@ -39,24 +70,25 @@ directionUrl?: string;
   twitter?: string;
   telegram?: string;
 
-  services?: Service[];
-
-  products?: Product[];
+  directionUrl?: string;
 
   galleryImages?: string[];
 
-  upiId?: string;
-  paymentQrCode?: string;
+  services?: ServiceItem[];
+
+  products?: ProductItem[];
+
+  socialLinks?: SocialLink[];
+
+  paymentLinks?: PaymentLink[];
+
+  testimonials?: Testimonial[];
+
+  documents?: DocumentItem[];
+
+  youtubeVideo?: string;
+
   showQrSection?: boolean;
-  qualification?: string;
-  specialization?: string;
-  clinicTiming?: string;
-  appointmentUrl?: string;
   showServices?: boolean;
-  template?: string;
   showProducts?: boolean;
-  primaryColor?: string;
-  secondaryColor?: string;
-  fontFamily?: string;
-  buttonStyle?: string;
 }
