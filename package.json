@@ -2,13 +2,9 @@
   "name": "digital_card",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "seed": "prisma db seed"
-  },
+ 
+  "scripts": { "dev": "next dev", "build": "prisma generate && next build", "start": "next start", "lint": "next lint" }
+  ,
   "dependencies": {
     "@prisma/client": "^6.0.0",
     "bcryptjs": "^2.4.3",
