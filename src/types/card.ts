@@ -1,94 +1,107 @@
+
 export interface ServiceItem {
-  title?: string;
-  description?: string;
-  price?: string;
-  category?: string;
-  icon?: string;
+  title?: string | null;
+  description?: string | null;
+  price?: string | null;
+  category?: string | null;
+  icon?: string | null;
 }
 
 export interface ProductItem {
-  name?: string;
-  description?: string;
-  price?: string;
-  discountPrice?: string;
-  image?: string;
-  category?: string;
+  name?: string | null;
+  description?: string | null;
+  price?: string | null;
+  discountPrice?: string | null;
+  image?: string | null;
+  category?: string | null;
 }
 
 export interface SocialLink {
-  platform?: string;
-  url?: string;
+  platform?: string | null;
+  url?: string | null;
 }
 
 export interface PaymentLink {
-  title?: string;
-  url?: string;
+  title?: string | null;
+  url?: string | null;
 }
 
 export interface Testimonial {
-  name?: string;
-  review?: string;
+  name?: string | null;
+  review?: string | null;
 }
 
 export interface DocumentItem {
-  title?: string;
-  file?: string;
+  title?: string | null;
+  file?: string | null;
 }
 
 export interface CardData {
-  id?: string;
-  slug?: string;
+  id?: string | null;
+  slug?: string | null;
 
   name: string;
 
-  designation?: string;
-  company?: string;
+  designation?: string | null;
+  company?: string | null;
 
-  mobile?: string;
-  whatsapp?: string;
+  upiId?: string | null;
+  paytmNumber?: string | null;
+  phonepeNumber?:string | null;
+  googlePayNumber?: string | null;
+  bankName?: string | null;
+  accountHolder?: string | null;
+  accountNumber?: string | null;
+  ifscCode?: string | null;
+  mobile?: string | null;
+  whatsapp?: string | null;
+  qualification?: string | null; 
+  specialization?: string | null; 
+  experience?: string | null; 
+  clinicName?: string | null; 
+  consultationFee?: string | null; 
+  workingHours?: string | null;
+  email?: string | null;
+  website?: string | null;
+  appointmentUrl?: string | null;
+  clinicTiming?: string | null;
+  address?: string | null;
+  bio?: string | null;
+  about?: string | null;
+  aboutUs?: string | null;
+  profileImage?: string | null;
+  coverImage?: string | null;
+  primaryColor?: string | null;
+  fontFamily?: string | null;
+  facebook?: string | null;
+  instagram?: string | null;
+  linkedin?: string | null;
+  youtube?: string | null;
+  twitter?: string | null;
+  telegram?: string | null;
+  
+  directionUrl?: string | null;
 
-  email?: string;
-  website?: string;
+  galleryImages?: string[] | null;
 
-  address?: string;
+  services?: ServiceItem[] | null;
 
-  bio?: string;
-  about?: string;
-  aboutUs?: string;
+  products?: ProductItem[] | null;
 
-  profileImage?: string;
+  socialLinks?: SocialLink[] | null;
 
-  coverImage?: string;
+  paymentLinks?: PaymentLink[] | null;
 
-  primaryColor?: string;
-  fontFamily?: string;
+  testimonials?: Testimonial[] | null;
 
-  facebook?: string;
-  instagram?: string;
-  linkedin?: string;
-  youtube?: string;
-  twitter?: string;
-  telegram?: string;
+  documents?: DocumentItem[] | null;
 
-  directionUrl?: string;
+  youtubeVideo?: string | null;
+  
+  secondaryColor?: string | null;
 
-  galleryImages?: string[];
-
-  services?: ServiceItem[];
-
-  products?: ProductItem[];
-
-  socialLinks?: SocialLink[];
-
-  paymentLinks?: PaymentLink[];
-
-  testimonials?: Testimonial[];
-
-  documents?: DocumentItem[];
-
-  youtubeVideo?: string;
-
-  showQrSection?: boolean;
-  showServices?: boolean;
-  showProducts?: boolean;
+  
+  showQrSection?: boolean | null;
+  showServices?: boolean | null;
+  showProducts?: boolean | null;
 }

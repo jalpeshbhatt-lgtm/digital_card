@@ -1,3 +1,6 @@
+
+"use client";
+
 import { CardData } from "@/types/card";
 import CardQRCode from "@/components/CardQRCode";
 import LeadForm from "@/components/LeadForm";
@@ -16,9 +19,20 @@ import {
 function shiftColor(hex: string, amount: number) {
   const num = parseInt(hex.replace("#", ""), 16);
 
-  const r = Math.max(0, Math.min(255, (num >> 16) + amount));
-  const g = Math.max(0, Math.min(255, ((num >> 8) & 255) + amount));
-  const b = Math.max(0, Math.min(255, (num & 255) + amount));
+  const r = Math.max(
+    0,
+    Math.min(255, (num >> 16) + amount)
+  );
+
+  const g = Math.max(
+    0,
+    Math.min(255, ((num >> 8) & 255) + amount)
+  );
+
+  const b = Math.max(
+    0,
+    Math.min(255, (num & 255) + amount)
+  );
 
   return (
     "#" +
@@ -27,34 +41,42 @@ function shiftColor(hex: string, amount: number) {
       .slice(1)
   );
 }
+
 export default function PortfolioLayout({
   card,
 }: {
   card: CardData;
 }) {
   return (
-   <div
-  className="max-w-[360px] mx-auto bg-white shadow-lg rounded-xl overflow-hidden border-[6px]"
-  style={{
-    fontFamily: card.fontFamily || "Inter",
-    borderColor: card.primaryColor || "#2563eb",
-    boxShadow: `0 8px 25px ${
-      card.primaryColor || "#2563eb"
-    }25`,
-  }}
->
-
+    <div
+      className="max-w-[360px] mx-auto bg-white shadow-lg rounded-xl overflow-hidden border-[6px]"
+      style={{
+        fontFamily: card.fontFamily || "Inter",
+        borderColor:
+          card.primaryColor || "#2563eb",
+        boxShadow: `0 8px 25px ${
+          card.primaryColor || "#2563eb"
+        }25`,
+      }}
+    >
       {/* Hero Section */}
-     <div
-  className="text-white p-10 text-center"
-  style={{
-    background: `linear-gradient(
-      135deg,
-      ${shiftColor(card.primaryColor || "#8e78dd", -15)},
-      ${shiftColor(card.primaryColor || "#8e78dd", 15)}
-    )`,
-  }}
->
+
+      <div
+        className="text-white p-10 text-center"
+        style={{
+          background: `linear-gradient(
+            135deg,
+            ${shiftColor(
+              card.primaryColor || "#8e78dd",
+              -15
+            )},
+            ${shiftColor(
+              card.primaryColor || "#8e78dd",
+              15
+            )}
+          )`,
+        }}
+      >
         <img
           src={
             card.profileImage ||
@@ -66,10 +88,9 @@ export default function PortfolioLayout({
           className="w-32 h-32 rounded-full mx-auto border-4 border-white mb-6"
         />
 
-       <h1
-        className="text-3xl font-bold"
-       >{card.name}
-      </h1>
+        <h1 className="text-3xl font-bold">
+          {card.name}
+        </h1>
 
         <p className="text-xl font-bold mt-2">
           {card.designation}
@@ -81,23 +102,23 @@ export default function PortfolioLayout({
       </div>
 
       {/* Content */}
+
       <div className="p-8">
-
         {/* Contact Information */}
+
         <div className="bg-gray-50 rounded-xl p-5 mb-6">
+          <h2
+            className="text-lg font-bold mb-3 text-left"
+            style={{
+              color:
+                card.primaryColor || "#2563eb",
+              opacity: 0.9,
+            }}
+          >
+            Contact Information
+          </h2>
 
-         
-<h2
-  className="text-lg font-bold mb-3 text-left"
-  style={{
-    color: card.primaryColor || "#2563eb",
-    opacity: 0.9,
-  }}
->
-  Contact Information
-</h2>
           <div className="space-y-2 text-gray-700">
-
             {card.mobile && (
               <p>
                 <span className="font-bold">
@@ -115,7 +136,6 @@ export default function PortfolioLayout({
                 {card.email}
               </p>
             )}
-            
 
             {card.address && (
               <p>
@@ -125,13 +145,12 @@ export default function PortfolioLayout({
                 {card.address}
               </p>
             )}
-
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
 
+        <div className="grid grid-cols-2 gap-3 mb-8">
           {card.mobile && (
             <a
               href={`tel:${card.mobile}`}
@@ -160,16 +179,18 @@ export default function PortfolioLayout({
               Email
             </a>
           )}
-{card.directionUrl && (
-  <a
-    href={card.directionUrl}
-    target="_blank"
-    rel="noreferrer"
-    className="block w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-center"
-  >
-    Direction
-  </a>
-)}
+
+          {card.directionUrl && (
+            <a
+              href={card.directionUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="bg-blue-600 text-white text-center py-3 rounded-lg font-semibold"
+            >
+              Direction
+            </a>
+          )}
+
           {card.website && (
             <a
               href={
@@ -184,15 +205,17 @@ export default function PortfolioLayout({
               Visit Website
             </a>
           )}
+
           <a
-  href={`/api/vcf/${card.slug}`}
-  className="bg-indigo-600 text-white text-center py-3 rounded-lg font-semibold"
->
-  Save Contact
-</a>
+            href={`/api/vcf/${card.slug}`}
+            className="bg-indigo-600 text-white text-center py-3 rounded-lg font-semibold"
+          >
+            Save Contact
+          </a>
         </div>
 
         {/* About Us */}
+
         {card.aboutUs && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-3">
@@ -206,6 +229,7 @@ export default function PortfolioLayout({
         )}
 
         {/* Bio */}
+
         {card.bio && (
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-3">
@@ -219,11 +243,9 @@ export default function PortfolioLayout({
         )}
 
         {/* Social Media */}
-        <div>
-        
 
+        <div className="mb-8">
           <div className="flex flex-wrap gap-5 text-3xl">
-
             {card.facebook && (
               <a
                 href={`https://${card.facebook.replace(
@@ -301,28 +323,39 @@ export default function PortfolioLayout({
                 <FaTelegram />
               </a>
             )}
-
           </div>
         </div>
+
+        {/* Contact Actions */}
+
         <ContactActions card={card} />
+
+        {/* QR Code */}
+
         <div className="mt-6 flex justify-center">
+          <CardQRCode
+            slug={card.slug ?? ""}
+            primaryColor={
+              card.primaryColor || "#9333EA"
+            }
+          />
+        </div>
 
-         <CardQRCode
-  slug={card.slug ?? ""}
-  primaryColor={card.primaryColor || "#9333EA"}
-/>
+        {/* Payment Section */}
 
-  </div>
+        <PaymentSection card={card} />
 
-{/* Payment Section */}
-<PaymentSection card={card} />
+        {/* Inquiry Form */}
 
-{/* Inquiry Form */}
-<LeadForm
-  cardId={card.id ?? ""}
-  primaryColor={card.primaryColor}
-/>
-       </div>
+        <div className="p-4">
+          <LeadForm
+            cardId={card.id ?? ""}
+            primaryColor={
+              card.primaryColor || "#2563eb"
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 }

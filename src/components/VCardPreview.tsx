@@ -1,12 +1,18 @@
-import TemplateRenderer from "@/template-engine/TemplateRenderer";
+import TemplateRenderer from "@/template-engine/renderer";
+
+interface Props {
+  template: string;
+  card: any;
+}
 
 export default function VCardPreview({
-  card,
   template,
-}: any) {
+  card,
+}: Props) {
   return (
     <TemplateRenderer
-  template={template}
-  cardData={card}
-/>  );
+      template={template}
+      cardData={card}
+    />
+  );
 }

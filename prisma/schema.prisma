@@ -30,6 +30,10 @@ model Card {
   galleryImages  String[] @default([])
   services       Json?
   products       Json?
+  paymentLinks   Json? 
+  socialLinks    Json? 
+  testimonials   Json? 
+  documents      Json?
   showServices   Boolean @default(true)
   showProducts   Boolean @default(true)
   specialization String?
@@ -63,6 +67,7 @@ model Card {
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   leads          Lead[]
   showQrSection  Boolean  @default(true)
+  
 }
 
 model Lead {
