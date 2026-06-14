@@ -1,15 +1,13 @@
-import { prisma } from "@/lib/prisma";
-import CardForm from "@/components/CardForm";
 
-interface Props {
-  params: Promise<{
-    id: string;
-  }>;
-}
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+import CardForm from "@/components/CardForm";
 
 export default async function EditCardPage({
   params,
-}: Props) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   const card = await prisma.card.findUnique({
@@ -22,80 +20,57 @@ export default async function EditCardPage({
   });
 
   if (!card) {
-    return (
-      <div
-        className="
-          min-h-screen
-          flex
-          items-center
-          justify-center
-          bg-[#0f172a]
-          text-white
-          p-10
-        "
-      >
-        <div
-          className="
-            w-full
-            max-w-lg
-            rounded-3xl
-            border
-            border-white/10
-            bg-white/5
-            p-10
-            text-center
-          "
-        >
-          <h1 className="text-4xl font-bold mb-4">
-            Card Not Found
-          </h1>
-
-          <p className="text-gray-400">
-            The requested digital card does not exist.
-          </p>
-
-          <a
-            href="/dashboard/cards"
-            className="
-              inline-block
-              mt-6
-              px-6
-              py-3
-              rounded-2xl
-              bg-gradient-to-r
-              from-violet-600
-              to-purple-600
-              text-white
-              font-semibold
-            "
-          >
-            Back to My Cards
-          </a>
-        </div>
-      </div>
-    );
+    return notFound();
   }
 
+  const parsedCard = {
+    ...card,
+
+    galleryImages: Array.isArray(
+      card.galleryImages
+    )
+      ? (card.galleryImages as any[])
+      : [],
+
+    services: Array.isArray(card.services)
+      ? (card.services as any[])
+      : [],
+
+    products: Array.isArray(card.products)
+      ? (card.products as any[])
+      : [],
+
+    socialLinks: Array.isArray(
+      card.socialLinks
+    )
+      ? (card.socialLinks as any[])
+      : [],
+
+    paymentLinks: Array.isArray(
+      card.paymentLinks
+    )
+      ? (card.paymentLinks as any[])
+      : [],
+
+    testimonials: Array.isArray(
+      card.testimonials
+    )
+      ? (card.testimonials as any[])
+      : [],
+
+    documents: Array.isArray(card.documents)
+      ? (card.documents as any[])
+      : [],
+  };
+
   return (
-    <div
-      className="
-        min-h-screen
-        bg-[#0f172a]
-      "
-    >
-      <div
-        className="
-          w-full
-          px-4
-          md:px-6
-          xl:px-10
-          py-6
-        "
-      >
-        <CardForm
-          initialData={card}
-          cardId={card.id}
-        />
+    <div className="min-h-screen bg-[#0f172a] p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-white mb-8">
+          Edit Card
+        </h1>
+
+        <CardForm initialData={parsedCard} />
       </div>
     </div>
   );

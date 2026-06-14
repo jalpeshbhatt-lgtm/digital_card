@@ -495,10 +495,16 @@ Please provide more details.`
             product: any,
             index: number
           ) => (
-            <div
-              key={index}
-              className="border rounded-xl p-4 bg-white shadow"
-            >
+           <div
+  key={index}
+  className="border rounded-xl p-4 shadow"
+  style={{
+    background:
+      "linear-gradient(135deg,#111111,#1a1a1a)",
+    borderColor:
+      card.primaryColor || "#d4af37",
+  }}
+>
               {product.image && (
                 <img
                   src={product.image}
