@@ -26,6 +26,7 @@ export default function CardForm({
     designation: "",
     company: "",
     profileImage: "",
+    coverImage: "",
     galleryImages: [] as string[],
 
     qualification: "",
@@ -101,6 +102,23 @@ export default function CardForm({
       }));
     }
   }, [initialData]);
+
+  const uploadImage = async (file: File): Promise<string> => {
+  const uploadForm = new FormData();
+  uploadForm.append("file", file);
+
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    body: uploadForm,
+  });
+
+  if (!res.ok) {
+    throw new Error("Upload failed");
+  }
+
+  const data = await res.json();
+  return data.url;
+};
 
   const selectedTemplate = templates.find(
     (t) => t.id === form.templateId
@@ -452,7 +470,16 @@ export default function CardForm({
 
         if (!file) return;
 
-        const url = await uploadImage(file);
+    const uploadForm = new FormData();
+uploadForm.append("file", file);
+
+const res = await fetch("/api/upload", {
+  method: "POST",
+  body: uploadForm,
+});
+
+const data = await res.json();
+const url = data.url;
 
         setForm({
           ...form,

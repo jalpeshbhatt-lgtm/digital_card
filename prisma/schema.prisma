@@ -26,6 +26,7 @@ model Card {
   designation    String?
   company        String?
   qualification  String?
+  coverImage     String?
   clinicTiming   String?
   galleryImages  String[] @default([])
   services       Json?
