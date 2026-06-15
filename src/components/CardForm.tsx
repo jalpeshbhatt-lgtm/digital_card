@@ -519,7 +519,16 @@ const url = data.url;
 
         if (!file) return;
 
-        const url = await uploadImage(file);
+        const uploadForm = new FormData();
+uploadForm.append("file", file);
+
+const res = await fetch("/api/upload", {
+  method: "POST",
+  body: uploadForm,
+});
+
+const data = await res.json();
+const url = data.url;
 
         setForm({
           ...form,

@@ -1,12 +1,10 @@
-import { mkdir, writeFile } from "fs/promises";
 import { NextResponse } from "next/server";
-import path from "path";
+import cloudinary from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
-    const data = await req.formData();
-
-    const file = data.get("file") as File;
+    const formData = await req.formData();
+    const file = formData.get("file") as File;
 
     if (!file) {
       return NextResponse.json(
@@ -18,44 +16,29 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const fileName =
-      Date.now() + "-" + file.name.replace(/\s+/g, "-");
+    const result: any = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "digital_card",
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
 
-    const uploadsDir = path.join(
-      process.cwd(),
-      "public",
-      "uploads"
-    );
-
-    // Create folder automatically if missing
-    await mkdir(uploadsDir, {
-      recursive: true,
+      uploadStream.end(buffer);
     });
 
-    const uploadPath = path.join(
-      uploadsDir,
-      fileName
-    );
-
-    console.log("Uploading file:", file.name);
-    console.log("Saving to:", uploadPath);
-
-    await writeFile(uploadPath, buffer);
-
     return NextResponse.json({
-      success: true,
-      url: `/uploads/${fileName}`,
+      url: result.secure_url,
     });
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
 
     return NextResponse.json(
-      {
-        error: "Upload failed",
-      },
-      {
-        status: 500,
-      }
+      { error: "Upload failed" },
+      { status: 500 }
     );
   }
 }
