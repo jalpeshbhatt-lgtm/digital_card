@@ -483,85 +483,71 @@ Please provide more details.`
 {/* PRODUCTS */}
 
 {card.showProducts &&
-  (card.products?.length ?? 0) > 0 && (
-    <div className="mt-8">
-      <h2 className="text-xl font-bold mb-4">
-        Products
-      </h2>
+  (card.products ?? []).map(
+  (product: any, index: number) => (
+    <div
+      key={index}
+      className="border rounded-2xl p-5 shadow-lg"
+      style={{
+        background:
+          "linear-gradient(135deg,#111111,#1a1a1a)",
+        borderColor:
+          card.primaryColor || "#d4af37",
+      }}
+    >
+      {product.image && (
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-44 object-cover rounded-xl mb-4"
+        />
+      )}
 
-      <div className="space-y-4">
-        {(card.products ?? []).map(
-          (
-            product: any,
-            index: number
-          ) => (
-           <div
-  key={index}
-  className="border rounded-xl p-4 shadow"
-  style={{
-    background:
-      "linear-gradient(135deg,#111111,#1a1a1a)",
-    borderColor:
-      card.primaryColor || "#d4af37",
-  }}
->
-              {product.image && (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded mb-3"
-                />
-              )}
+      <h3 className="font-bold text-xl text-white">
+        {product.name}
+      </h3>
 
-              <h3 className="font-bold text-lg">
-                {product.name}
-              </h3>
+      {product.category && (
+        <p className="text-gray-400 text-sm mt-1">
+          {product.category}
+        </p>
+      )}
 
-              {product.category && (
-                <p className="text-gray-500 text-sm">
-                  {product.category}
-                </p>
-              )}
+      <p className="text-gray-300 text-sm mt-3 leading-relaxed">
+        {product.description}
+      </p>
 
-              <p className="text-gray-600 text-sm mt-2">
-                {product.description}
-              </p>
-
-              <div className="mt-2">
-                {product.discountPrice ? (
-                  <>
-                    <span className="line-through text-gray-400 mr-2">
-                      ₹{product.price}
-                    </span>
-
-                    <span className="font-bold text-green-600">
-                      ₹{product.discountPrice}
-                    </span>
-                  </>
-                ) : (
-                  <span className="font-bold">
-                    ₹{product.price}
-                  </span>
-                )}
-              </div>
-
-              {card.whatsapp && (
-                <a
-                  href={`https://wa.me/${card.whatsapp}?text=Hi, I want to order ${product.name}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block mt-3 text-center text-white py-2 rounded bg-green-500"
-                >
-                  Order on WhatsApp
-                </a>
-              )}
-            </div>
-          )
-        )}
+      <div
+        className="font-bold text-3xl mt-4"
+        style={{
+          color:
+            card.primaryColor || "#d4af37",
+        }}
+      >
+        ₹
+        {product.discountPrice ||
+          product.price}
       </div>
-    </div>
-)}
 
+      {card.whatsapp && (
+        <a
+          href={`https://wa.me/${card.whatsapp}?text=${encodeURIComponent(
+            `Hi, I want to order ${product.name}`
+          )}`}
+          target="_blank"
+          rel="noreferrer"
+          className="block w-full mt-5 text-center text-black py-3 rounded-xl font-bold transition"
+          style={{
+            background:
+              card.primaryColor || "#d4af37",
+          }}
+        >
+          Order Now
+        </a>
+      )}
+    </div>
+  )
+)}
 
           {/* PAYMENT */}
 

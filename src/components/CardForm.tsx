@@ -340,189 +340,291 @@ export default function CardForm({
               />
             </div>
 
-            {/* PROFILE */}
 
-            <div
-              id="profile"
-              className="
-                rounded-[32px]
-                border
-                border-white/10
-                bg-white/5
-                p-8
-              "
-            >
-              <h2 className="text-4xl font-bold mb-8">
-                Profile Information
-              </h2>
+{/* PROFILE */}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div
+  id="profile"
+  className="
+    rounded-[32px]
+    border
+    border-white/10
+    bg-white/5
+    p-8
+  "
+>
+  <h2 className="text-4xl font-bold mb-8">
+    Profile Information
+  </h2>
 
-                {[
-                  ["Full Name", "name"],
-                  ["Designation", "designation"],
-                  ["Company Name", "company"],
-                  ["Mobile", "mobile"],
-                  ["WhatsApp", "whatsapp"],
-                  ["Email", "email"],
-                  ["Website", "website"],
-                  ["Address", "address"],
-                ].map(([label, key]) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                  <input
-                    key={key}
-                    placeholder={label}
-                    value={(form as any)[key]}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        [key]: e.target.value,
-                      })
-                    }
-                    className="
-                      h-16
-                      rounded-3xl
-                      bg-[#071132]
-                      border
-                      border-white/10
-                      px-5
-                    "
-                  />
+    {[
+      ["Full Name", "name"],
+      ["Designation", "designation"],
+      ["Company Name", "company"],
+      ["Mobile", "mobile"],
+      ["WhatsApp", "whatsapp"],
+      ["Email", "email"],
+      ["Website", "website"],
+      ["Address", "address"],
+      ["Direction URL", "directionUrl"],
+    ].map(([label, key]) => (
 
-                ))}
+      <input
+        key={key}
+        placeholder={label}
+        value={(form as any)[key]}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            [key]: e.target.value,
+          })
+        }
+        className="
+          h-16
+          rounded-3xl
+          bg-[#071132]
+          border
+          border-white/10
+          px-5
+        "
+      />
 
-              </div>
+    ))}
 
-              <textarea
-                placeholder="Bio"
-                value={form.bio}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    bio: e.target.value,
-                  })
-                }
-                className="
-                  w-full
-                  mt-6
-                  min-h-[140px]
-                  rounded-3xl
-                  bg-[#071132]
-                  border
-                  border-white/10
-                  p-5
-                "
-              />
+  </div>
 
-            </div>
+  <textarea
+    placeholder="About Us"
+    value={form.aboutUs}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        aboutUs: e.target.value,
+      })
+    }
+    className="
+      w-full
+      mt-6
+      min-h-[140px]
+      rounded-3xl
+      bg-[#071132]
+      border
+      border-white/10
+      p-5
+    "
+  />
 
-            {/* DOCTOR */}
+  <textarea
+    placeholder="Professional Bio"
+    value={form.bio}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        bio: e.target.value,
+      })
+    }
+    className="
+      w-full
+      mt-6
+      min-h-[140px]
+      rounded-3xl
+      bg-[#071132]
+      border
+      border-white/10
+      p-5
+    "
+  />
 
-            {isDoctorLayout && (
+  {/* PROFILE IMAGE */}
 
-              <div
-                id="doctor"
-                className="
-                  rounded-[32px]
-                  border
-                  border-white/10
-                  bg-white/5
-                  p-8
-                "
-              >
-                <h2 className="text-4xl font-bold mb-8">
-                  Doctor Information
-                </h2>
+  <div className="mt-8">
+    <label className="block mb-3 font-semibold">
+      Profile Image
+    </label>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={async (e) => {
+        const file = e.target.files?.[0];
 
-                  {[
-                    ["Qualification", "qualification"],
-                    ["Specialization", "specialization"],
-                    ["Clinic Timing", "clinicTiming"],
-                    ["Appointment URL", "appointmentUrl"],
-                  ].map(([label, key]) => (
+        if (!file) return;
 
-                    <input
-                      key={key}
-                      placeholder={label}
-                      value={(form as any)[key]}
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          [key]: e.target.value,
-                        })
-                      }
-                      className="
-                        h-16
-                        rounded-3xl
-                        bg-[#071132]
-                        border
-                        border-white/10
-                        px-5
-                      "
-                    />
+        const url = await uploadImage(file);
 
-                  ))}
+        setForm({
+          ...form,
+          profileImage: url,
+        });
+      }}
+      className="block"
+    />
 
-                </div>
-              </div>
+    {form.profileImage && (
+      <img
+        src={form.profileImage}
+        alt=""
+        className="
+          mt-4
+          w-40
+          h-40
+          object-cover
+          rounded-3xl
+        "
+      />
+    )}
+  </div>
 
-            )}
+  {/* COVER IMAGE */}
 
-            {/* SOCIAL */}
+  <div className="mt-8">
+    <label className="block mb-3 font-semibold">
+      Cover Image
+    </label>
 
-            <div
-              id="social"
-              className="
-                rounded-[32px]
-                border
-                border-white/10
-                bg-white/5
-                p-8
-              "
-            >
-              <h2 className="text-4xl font-bold mb-8">
-                Social Media
-              </h2>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={async (e) => {
+        const file = e.target.files?.[0];
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        if (!file) return;
 
-                {[
-                  ["Facebook", "facebook"],
-                  ["Instagram", "instagram"],
-                  ["LinkedIn", "linkedin"],
-                  ["YouTube", "youtube"],
-                  ["Twitter", "twitter"],
-                  ["Telegram", "telegram"],
-                ].map(([label, key]) => (
+        const url = await uploadImage(file);
 
-                  <input
-                    key={key}
-                    placeholder={label}
-                    value={(form as any)[key]}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        [key]: e.target.value,
-                      })
-                    }
-                    className="
-                      h-16
-                      rounded-3xl
-                      bg-[#071132]
-                      border
-                      border-white/10
-                      px-5
-                    "
-                  />
+        setForm({
+          ...form,
+          coverImage: url,
+        });
+      }}
+      className="block"
+    />
 
-                ))}
+    {form.coverImage && (
+      <img
+        src={form.coverImage}
+        alt=""
+        className="
+          mt-4
+          w-full
+          h-52
+          object-cover
+          rounded-3xl
+        "
+      />
+    )}
+  </div>
+</div>
 
-              </div>
-            </div>
+{/* DOCTOR */}
 
-          {/* SERVICES */}
+{isDoctorLayout && (
+
+  <div
+    id="doctor"
+    className="
+      rounded-[32px]
+      border
+      border-white/10
+      bg-white/5
+      p-8
+    "
+  >
+    <h2 className="text-4xl font-bold mb-8">
+      Doctor Information
+    </h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      {[
+        ["Qualification", "qualification"],
+        ["Specialization", "specialization"],
+        ["Clinic Timing", "clinicTiming"],
+        ["Appointment URL", "appointmentUrl"],
+      ].map(([label, key]) => (
+
+        <input
+          key={key}
+          placeholder={label}
+          value={(form as any)[key]}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              [key]: e.target.value,
+            })
+          }
+          className="
+            h-16
+            rounded-3xl
+            bg-[#071132]
+            border
+            border-white/10
+            px-5
+          "
+        />
+
+      ))}
+
+    </div>
+  </div>
+
+)}
+
+{/* SOCIAL */}
+
+<div
+  id="social"
+  className="
+    rounded-[32px]
+    border
+    border-white/10
+    bg-white/5
+    p-8
+  "
+>
+  <h2 className="text-4xl font-bold mb-8">
+    Social Media
+  </h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    {[
+      ["Facebook", "facebook"],
+      ["Instagram", "instagram"],
+      ["LinkedIn", "linkedin"],
+      ["YouTube", "youtube"],
+      ["Twitter", "twitter"],
+      ["Telegram", "telegram"],
+    ].map(([label, key]) => (
+
+      <input
+        key={key}
+        placeholder={label}
+        value={(form as any)[key]}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            [key]: e.target.value,
+          })
+        }
+        className="
+          h-16
+          rounded-3xl
+          bg-[#071132]
+          border
+          border-white/10
+          px-5
+        "
+      />
+
+    ))}
+
+  </div>
+</div>
+         
+ {/* SERVICES */}
 
 <div
   id="services"
@@ -898,7 +1000,7 @@ export default function CardForm({
               "
             >
               <h2 className="text-4xl font-bold mb-8">
-                Payment Information
+                UPI ID (For Receiving Payment)
               </h2>
 
               <input
