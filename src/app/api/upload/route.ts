@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import cloudinary from "@/lib/cloudinary";
+import { writeFile } from "fs/promises";
+import path from "path";
 
 export async function POST(req: Request) {
   try {
@@ -16,23 +17,14 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const result: any = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "digital_card",
-        },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
+    const filename = `${Date.now()}-${file.name}`;
+    const filePath = path.join(process.cwd(), "public/uploads", filename);
 
-      uploadStream.end(buffer);
-    });
+    await writeFile(filePath, buffer);
 
-    return NextResponse.json({
-      url: result.secure_url,
-    });
+    const url = `/uploads/${filename}`;
+
+    return NextResponse.json({ url });
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TemplateSelector from "@/components/TemplateSelector";
+import DragDropUploader from "@/components/DragDropUploader";
 
 interface Template {
   id: string;
@@ -94,14 +95,17 @@ export default function CardForm({
     loadTemplates();
   }, []);
 
-  useEffect(() => {
-    if (initialData) {
-      setForm((prev) => ({
-        ...prev,
-        ...initialData,
-      }));
-    }
-  }, [initialData]);
+ const [isHydrated, setIsHydrated] = useState(false);
+
+useEffect(() => {
+  if (initialData && !isHydrated) {
+    setForm(prev => ({
+      ...prev,
+      ...initialData,
+    }));
+    setIsHydrated(true);
+  }
+}, [initialData, isHydrated]);
 
   const uploadImage = async (file: File): Promise<string> => {
   const uploadForm = new FormData();
@@ -128,41 +132,40 @@ export default function CardForm({
     selectedTemplate?.slug?.includes("doctor") ||
     selectedTemplate?.category === "doctor";
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const url = cardId
-        ? `/api/cards/${cardId}`
-        : "/api/cards";
+  try {
+    const isEdit = Boolean(cardId);
 
-      const method = cardId ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
+    const res = await fetch(
+      isEdit ? `/api/cards/${cardId}` : "/api/cards",
+      {
+        method: isEdit ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to save");
+        body: JSON.stringify({
+          ...form,
+          id: cardId, // IMPORTANT SAFETY BACKUP
+        }),
       }
+    );
 
-      alert(
-        cardId
-          ? "Card Updated Successfully"
-          : "Card Created Successfully"
-      );
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong");
+    if (!res.ok) {
+      throw new Error("Failed to save");
     }
-  };
 
+    alert(
+      isEdit
+        ? "Card Updated Successfully"
+        : "Card Created Successfully"
+    );
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
+  }
+};
   return (
     <div className="w-full min-h-screen bg-[#020617] text-white">
       <div className="w-full max-w-[1800px] mx-auto px-4 xl:px-8 py-6">
@@ -330,6 +333,15 @@ export default function CardForm({
               </div>
             </div>
 
+<DragDropUploader
+  onChange={(urls) =>
+    setForm((prev) => ({
+      ...prev,
+      galleryImages: urls,
+    }))
+  }
+/>
+
             {/* TEMPLATE */}
 
             <div
@@ -481,10 +493,10 @@ const res = await fetch("/api/upload", {
 const data = await res.json();
 const url = data.url;
 
-        setForm({
-          ...form,
-          profileImage: url,
-        });
+       setForm(prev => ({
+  ...prev,
+  profileImage: url,
+}));
       }}
       className="block"
     />
@@ -530,10 +542,10 @@ const res = await fetch("/api/upload", {
 const data = await res.json();
 const url = data.url;
 
-        setForm({
-          ...form,
-          coverImage: url,
-        });
+        setForm(prev => ({
+  ...prev,
+  coverImage: url,
+}));
       }}
       className="block"
     />
@@ -1020,8 +1032,43 @@ const url = data.url;
       {/* GALLERY */} <div id="gallery" className=" rounded-[32px] border border-white/10 bg-white/5 p-8 " > 
       <div className="flex items-center justify-between mb-8"> 
         <h2 className="text-4xl font-bold"> Gallery </h2> 
-        <label className=" px-6 py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 transition font-semibold cursor-pointer " > Upload Images 
-          <input type="file" multiple accept="image/*" hidden onChange={async (e) => { const files = e.target.files; if (!files) return; const uploadedUrls: string[] = []; for (const file of Array.from(files)) { const uploadForm = new FormData(); uploadForm.append( "file", file ); const res = await fetch( "/api/upload", { method: "POST", body: uploadForm, } ); const data = await res.json(); uploadedUrls.push( data.url ); } setForm({ ...form, galleryImages: [ ...form.galleryImages, ...uploadedUrls, ], }); }} /> </label> </div> <div className="grid grid-cols-2 md:grid-cols-3 gap-5"> {form.galleryImages.map( (img, index) => ( <div key={index} className="relative" > <img src={img} alt="" className=" w-full h-44 object-cover rounded-3xl border border-white/10 " /> <button type="button" onClick={() => { const updated = form.galleryImages.filter( (_, i) => i !== index ); setForm({ ...form, galleryImages: updated, }); }} className=" absolute top-3 right-3 w-9 h-9 rounded-full bg-red-500 hover:bg-red-600 transition font-bold " > × </button> </div> ) )} </div> </div>
+
+        <label className="px-6 py-3 rounded-2xl bg-violet-600 hover:bg-violet-700 transition font-semibold cursor-pointer inline-block">
+  Upload Images
+
+  <input
+    type="file"
+    multiple
+    accept="image/*"
+    className="hidden"
+    onChange={async (e) => {
+      const files = e.target.files;
+      if (!files) return;
+
+      const uploadedUrls: string[] = [];
+
+      for (const file of Array.from(files)) {
+        const uploadForm = new FormData();
+        uploadForm.append("file", file);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadForm,
+        });
+
+        const data = await res.json();
+        uploadedUrls.push(data.url);
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        galleryImages: [...prev.galleryImages, ...uploadedUrls],
+      }));
+    }}
+  />
+</label>
+ 
+ </div> <div className="grid grid-cols-2 md:grid-cols-3 gap-5"> {form.galleryImages.map( (img, index) => ( <div key={index} className="relative" > <img src={img} alt="" className=" w-full h-44 object-cover rounded-3xl border border-white/10 " /> <button type="button" onClick={() => { const updated = form.galleryImages.filter( (_, i) => i !== index ); setForm({ ...form, galleryImages: updated, }); }} className=" absolute top-3 right-3 w-9 h-9 rounded-full bg-red-500 hover:bg-red-600 transition font-bold " > × </button> </div> ) )} </div> </div>
 
             {/* PAYMENT */}
 

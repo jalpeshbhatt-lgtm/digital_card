@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import cloudinary from "@/lib/cloudinary";
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,7 +41,7 @@ export async function POST(req: NextRequest) {
         address: body.address,
 
         name: body.name,
-        profileImage: body.profileImage,
+        
         designation: body.designation,
         company: body.company,
         qualification: body.qualification,
@@ -52,7 +55,12 @@ export async function POST(req: NextRequest) {
         showProducts: body.showProducts,
         mobile: body.mobile,
         whatsapp: body.whatsapp,
+        
+        profileImage: body.profileImage || "",
+        coverImage: body.coverImage || "",
+        galleryImages: body.galleryImages || [],
 
+        
         directionUrl: body.directionUrl,
         email: body.email,
         website: body.website,
@@ -70,7 +78,6 @@ export async function POST(req: NextRequest) {
         youtube: body.youtube,
         twitter: body.twitter,
         telegram: body.telegram,
-       galleryImages: body.galleryImages || [],
         slug:
           body.name
             .toLowerCase()

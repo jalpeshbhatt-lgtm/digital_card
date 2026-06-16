@@ -1,33 +1,47 @@
-import Link from "next/link";
+"use client";
 
-export default function HomePage() {
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function Login() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const login = () => {
+    if (email && password) {
+      localStorage.setItem("auth", "true");
+      router.push("/dashboard");
+    } else {
+      alert("Enter credentials");
+    }
+  };
+
   return (
-    <main className="min-h-screen">
-      <section className="container mx-auto py-20 px-4">
-        <h1 className="text-5xl font-bold">
-          Create Professional Digital Visiting Cards
-        </h1>
+    <div className="flex h-screen items-center justify-center bg-black text-white">
+      <div className="p-10 bg-gray-900 rounded-2xl w-[350px]">
+        <h1 className="text-2xl mb-5">Login</h1>
 
-        <p className="mt-4 text-lg text-gray-600">
-          Build, share and manage digital business cards in minutes.
-        </p>
+        <input
+          className="w-full p-2 mb-3 text-black"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        <div className="mt-8 flex gap-4">
-          <Link
-            href="/register"
-            className="px-6 py-3 rounded bg-black text-white"
-          >
-            Start Free Trial
-          </Link>
+        <input
+          className="w-full p-2 mb-3 text-black"
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-          <Link
-            href="/login"
-            className="px-6 py-3 rounded border"
-          >
-            Login
-          </Link>
-        </div>
-      </section>
-    </main>
+        <button
+          onClick={login}
+          className="w-full bg-blue-600 p-2 rounded"
+        >
+          Login
+        </button>
+      </div>
+    </div>
   );
 }
