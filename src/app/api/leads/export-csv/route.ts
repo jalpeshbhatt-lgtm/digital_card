@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/auth";
+import { verifyToken } from "@/lib/api";
 
 export async function GET() {
   try {

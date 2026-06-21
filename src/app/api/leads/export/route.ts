@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { verifyToken } from "@/lib/auth";
+import { verifyToken } from "@/lib/api";
 import { cookies } from "next/headers";
 import * as XLSX from "xlsx";
 

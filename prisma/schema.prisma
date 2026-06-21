@@ -7,114 +7,200 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/**
+ * ================= USER =================
+ */
+
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      UserRole @default(USER)
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole @default(USER)
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  cards     Card[]
+
+  cards        Card[]
+  subscription Subscription?
+  reseller     Reseller?
 }
+
+/**
+ * ================= CARD =================
+ */
 
 model Card {
-  id             String    @id @default(cuid())
-  userId         String
-  templateId     String?
-  name           String
-  designation    String?
-  company        String?
-  qualification  String?
-  coverImage     String?
-  clinicTiming   String?
-  galleryImages  String[] @default([])
-  services       Json?
-  products       Json?
-  paymentLinks   Json? 
-  socialLinks    Json? 
-  testimonials   Json? 
-  documents      Json?
-  showServices   Boolean @default(true)
-  showProducts   Boolean @default(true)
+  id         String  @id @default(cuid())
+  userId     String
+  templateId String?
+
+  name          String
+  designation   String?
+  company       String?
+  qualification String?
+
+  coverImage   String?
+  clinicTiming String?
+
+  galleryImages String[] @default([])
+
+  services     Json?
+  products     Json?
+  paymentLinks Json?
+  socialLinks  Json?
+  testimonials Json?
+  documents    Json?
+
+  showServices Boolean @default(true)
+  showProducts Boolean @default(true)
+
   specialization String?
   appointmentUrl String?
-  mobile         String?
-  whatsapp       String?
-  email          String?
-  website        String?
-  bio            String?
-  profileImage   String?
-  slug           String    @unique
-  views          Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  facebook       String?
-  instagram      String?
-  linkedin       String?
-  telegram       String?
-  twitter        String?
-  youtube        String?
-  address        String?
-  aboutUs        String?
-  primaryColor   String?   @default("#2563eb")
-  secondaryColor String?   @default("#ffffff")
-  fontFamily     String?   @default("Inter")
-  buttonStyle    String?   @default("rounded")
-  directionUrl   String?
-  paymentQrCode  String?
-  upiId          String?
-  template       Template? @relation(fields: [templateId], references: [id])
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  leads          Lead[]
-  showQrSection  Boolean  @default(true)
-  
+
+  mobile   String?
+  whatsapp String?
+  email    String?
+  website  String?
+
+  bio          String?
+  profileImage String?
+
+  slug  String @unique
+  views Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  facebook  String?
+  instagram String?
+  linkedin  String?
+  telegram  String?
+  twitter   String?
+  youtube   String?
+
+  address String?
+  aboutUs String?
+
+  primaryColor   String? @default("#2563eb")
+  secondaryColor String? @default("#ffffff")
+  fontFamily     String? @default("Inter")
+  buttonStyle    String? @default("rounded")
+
+  directionUrl  String?
+  paymentQrCode String?
+  upiId         String?
+
+  showQrSection Boolean @default(true)
+
+  /**
+   * RELATIONS
+   */
+  template Template? @relation(fields: [templateId], references: [id])
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leads    Lead[]
 }
+
+/**
+ * ================= LEAD =================
+ */
 
 model Lead {
-  id        String   @id @default(cuid())
-  cardId    String
-  name      String
-  email     String?
-  mobile    String?
-  message   String?
+  id     String @id @default(cuid())
+  cardId String
+
+  name    String
+  email   String?
+  mobile  String?
+  message String?
+
   createdAt DateTime @default(now())
-  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
 }
 
-model SubscriptionPlan {
-  id         String   @id @default(cuid())
-  name       String
-  price      Float
-  cardsLimit Int
-  createdAt  DateTime @default(now())
+/**
+ * ================= SUBSCRIPTION =================
+ */
+model Subscription {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  plan   String
+  status String
+
+  cardLimit  Int @default(1)
+  extraCards Int @default(0)
+
+  customDomain Boolean @default(false)
+
+  startDate  DateTime
+  expiryDate DateTime
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+/**
+ * ================= COMMISSION =================
+ */
 
 model Commission {
-  id        String   @id @default(cuid())
-  userId    String
-  amount    Float
-  status    String   @default("PENDING")
+  id     String @id @default(cuid())
+  userId String
+
+  amount Float
+  status String @default("PENDING")
+
   createdAt DateTime @default(now())
 }
+
+/**
+ * ================= PRODUCT =================
+ */
 
 model Product {
-  id          String @id
-  name        String
-  image       String?
+  id    String  @id @default(cuid())
+  name  String
+  image String?
 }
 
+/**
+ * ================= TEMPLATE =================
+ */
 
 model Template {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   name      String
   thumbnail String?
-  createdAt DateTime @default(now())
   category  String
-  isActive  Boolean  @default(true)
-  slug      String   @unique
-  cards     Card[]
+  slug      String  @unique
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  cards Card[]
 }
+
+/**
+ * ================= RESELLER =================
+ */
+
+model Reseller {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  companyName String
+  commission  Float  @default(0)
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/**
+ * ================= ENUM =================
+ */
 
 enum UserRole {
   USER

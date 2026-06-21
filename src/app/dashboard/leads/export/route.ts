@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
-import { verifyToken } from "@/lib/auth";
+import { verifyToken } from "@/lib/api";
 import * as XLSX from "xlsx";
 
 export async function GET() {
