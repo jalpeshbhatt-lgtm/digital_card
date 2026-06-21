@@ -77,6 +77,25 @@ export default async function DashboardPage() {
     take: 5,
   });
 
+  const subscription =
+    await prisma.subscription.findUnique({
+      where: {
+        userId,
+      },
+    });
+
+  const cardLimit =
+    (subscription?.cardLimit || 0) +
+    (subscription?.extraCards || 0);
+
+  const usedPercentage =
+    cardLimit > 0
+      ? Math.min(
+          (totalCards / cardLimit) * 100,
+          100
+        )
+      : 0;
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
       {/* Header */}
@@ -135,7 +154,66 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Existing Actions */}
+      {/* Subscription */}
+
+      <div className="bg-white/5 border border-white/10 rounded-3xl p-6 mb-10">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold">
+              Subscription
+            </h2>
+
+            <p className="text-gray-400 mt-2">
+              Plan:{" "}
+              <span className="text-white font-semibold">
+                {subscription?.plan ||
+                  "No Plan"}
+              </span>
+            </p>
+
+            <p className="text-gray-400">
+              Cards Used: {totalCards} /{" "}
+              {cardLimit}
+            </p>
+
+            <p className="text-gray-400">
+              Expires:
+              {" "}
+              {subscription?.expiryDate
+                ? new Date(
+                    subscription.expiryDate
+                  ).toLocaleDateString()
+                : "N/A"}
+            </p>
+          </div>
+
+          <Link
+            href="/pricing"
+            className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 transition font-semibold"
+          >
+            Upgrade Plan
+          </Link>
+        </div>
+
+        {/* Progress Bar */}
+
+        <div className="mt-6">
+          <div className="w-full h-4 rounded-full bg-white/10 overflow-hidden">
+            <div
+              className="h-full bg-violet-600"
+              style={{
+                width: `${usedPercentage}%`,
+              }}
+            />
+          </div>
+
+          <p className="text-sm text-gray-400 mt-2">
+            {totalCards} of {cardLimit} cards used
+          </p>
+        </div>
+      </div>
+
+      {/* Actions */}
 
       <div className="grid md:grid-cols-2 gap-8 mb-12">
         <Link
@@ -145,6 +223,11 @@ export default async function DashboardPage() {
           <h2 className="text-2xl font-bold">
             Create New Card
           </h2>
+
+          <p className="text-gray-400 mt-3">
+            Create and publish a new
+            digital business card.
+          </p>
         </Link>
 
         <Link
@@ -154,6 +237,11 @@ export default async function DashboardPage() {
           <h2 className="text-2xl font-bold">
             My Cards
           </h2>
+
+          <p className="text-gray-400 mt-3">
+            Manage and edit all your
+            existing cards.
+          </p>
         </Link>
       </div>
 
@@ -195,6 +283,17 @@ export default async function DashboardPage() {
                 </td>
               </tr>
             ))}
+
+            {recentLeads.length === 0 && (
+              <tr>
+                <td
+                  colSpan={4}
+                  className="py-6 text-center text-gray-400"
+                >
+                  No leads yet
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

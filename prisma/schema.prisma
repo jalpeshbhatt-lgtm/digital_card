@@ -18,11 +18,15 @@ model User {
   password String
   role     UserRole @default(USER)
 
+  isActive      Boolean @default(true)
+  emailVerified Boolean @default(false)
+
   createdAt DateTime @default(now())
 
-  cards        Card[]
-  subscription Subscription?
-  reseller     Reseller?
+  cards         Card[]
+  subscription  Subscription?
+  reseller      Reseller?
+  payments      Payment[]
 }
 
 /**
@@ -92,9 +96,6 @@ model Card {
 
   showQrSection Boolean @default(true)
 
-  /**
-   * RELATIONS
-   */
   template Template? @relation(fields: [templateId], references: [id])
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   leads    Lead[]
@@ -121,6 +122,7 @@ model Lead {
 /**
  * ================= SUBSCRIPTION =================
  */
+
 model Subscription {
   id     String @id @default(cuid())
   userId String @unique
@@ -128,12 +130,15 @@ model Subscription {
   plan   String
   status String
 
-  cardLimit  Int @default(1)
+  cardLimit Int @default(1)
   extraCards Int @default(0)
 
   customDomain Boolean @default(false)
 
-  startDate  DateTime
+  razorpayPaymentId String?
+  razorpayOrderId   String?
+
+  startDate DateTime
   expiryDate DateTime
 
   createdAt DateTime @default(now())
@@ -141,6 +146,23 @@ model Subscription {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+/**
+ * ================= PAYMENT =================
+ */
+ model Payment {
+  id String @id @default(cuid())
+  userId String
+  amount Float
+  plan String
+  status PaymentStatus @default(PENDING)
+
+  razorpayOrderId String?
+  razorpayPaymentId String?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 /**
  * ================= COMMISSION =================
  */
@@ -150,6 +172,7 @@ model Commission {
   userId String
 
   amount Float
+
   status String @default("PENDING")
 
   createdAt DateTime @default(now())
@@ -160,7 +183,7 @@ model Commission {
  */
 
 model Product {
-  id    String  @id @default(cuid())
+  id    String @id @default(cuid())
   name  String
   image String?
 }
@@ -170,11 +193,11 @@ model Product {
  */
 
 model Template {
-  id        String  @id @default(cuid())
+  id        String @id @default(cuid())
   name      String
   thumbnail String?
   category  String
-  slug      String  @unique
+  slug      String @unique
   isActive  Boolean @default(true)
 
   createdAt DateTime @default(now())
@@ -191,7 +214,7 @@ model Reseller {
   userId String @unique
 
   companyName String
-  commission  Float  @default(0)
+  commission  Float @default(0)
 
   createdAt DateTime @default(now())
 
@@ -208,3 +231,10 @@ enum UserRole {
   RESELLER
   SUPER_ADMIN
 }
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+

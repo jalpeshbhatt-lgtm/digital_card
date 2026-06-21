@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import TemplateSelector from "@/components/TemplateSelector";
 import DragDropUploader from "@/components/DragDropUploader";
+import toast from "react-hot-toast";
 
 interface Template {
   id: string;
@@ -132,41 +133,59 @@ useEffect(() => {
     selectedTemplate?.slug?.includes("doctor") ||
     selectedTemplate?.category === "doctor";
 
- const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (
+  e: React.FormEvent
+) => {
   e.preventDefault();
 
   try {
     const isEdit = Boolean(cardId);
 
     const res = await fetch(
-      isEdit ? `/api/cards/${cardId}` : "/api/cards",
+      isEdit
+        ? `/api/cards/${cardId}`
+        : "/api/cards",
       {
         method: isEdit ? "PUT" : "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
         },
         body: JSON.stringify({
           ...form,
-          id: cardId, // IMPORTANT SAFETY BACKUP
+          id: cardId,
         }),
       }
     );
 
+    const result = await res.json();
+
     if (!res.ok) {
-      throw new Error("Failed to save");
+      throw new Error(
+        result.error ||
+          result.message ||
+          "Failed to save"
+      );
     }
 
-    alert(
-      isEdit
-        ? "Card Updated Successfully"
-        : "Card Created Successfully"
-    );
-  } catch (error) {
+   toast.success(
+  isEdit
+    ? "Card Updated Successfully"
+    : "Card Created Successfully"
+);
+
+    console.log(result);
+  } catch (error: any) {
     console.error(error);
-    alert("Something went wrong");
+
+   toast.error(
+  error.message ||
+  "Something went wrong"
+);
   }
 };
-  return (
+
+return (
     <div className="w-full min-h-screen bg-[#020617] text-white">
       <div className="w-full max-w-[1800px] mx-auto px-4 xl:px-8 py-6">
 
