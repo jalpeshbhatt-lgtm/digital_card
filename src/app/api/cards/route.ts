@@ -119,16 +119,16 @@ export async function POST(req: NextRequest) {
           body.appointmentUrl,
 
         showQrSection:
-          body.showQrSection,
+  body.showQrSection ?? true,
 
         services: body.services,
         products: body.products,
 
         showServices:
-          body.showServices,
+  body.showServices ?? true,
 
-        showProducts:
-          body.showProducts,
+       showProducts:
+  body.showProducts ?? true,
 
         mobile: body.mobile,
         whatsapp: body.whatsapp,
@@ -140,7 +140,14 @@ export async function POST(req: NextRequest) {
           body.coverImage || "",
 
         galleryImages:
-          body.galleryImages || [],
+  Array.isArray(body.galleryImages)
+    ? body.galleryImages.filter(
+        (img: string | null) =>
+          img &&
+          typeof img === "string" &&
+          img.trim() !== ""
+      )
+    : [],
 
         directionUrl:
           body.directionUrl,
